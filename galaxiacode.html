@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Para Você </title>
+
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: black;
+      font-family: 'Georgia', serif;
+      color: white;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
+    }
+
+    .tela-inicial {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2;
+    }
+
+    button {
+      padding: 18px 40px;
+      font-size: 20px;
+      border-radius: 40px;
+      border: none;
+      cursor: pointer;
+      background: white;
+      color: black;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      background: gold;
+    }
+
+    .frases {
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      top: 40%;
+      opacity: 0;
+      transition: opacity 2s;
+      z-index: 2;
+    }
+
+    .frase1 {
+      font-size: 36px;
+    }
+
+    .frase2 {
+      font-size: 22px;
+      margin-top: 25px;
+      opacity: 0;
+      transition: opacity 2s;
+    }
+
+    .assinatura {
+      position: absolute;
+      bottom: 25px;
+      width: 100%;
+      text-align: center;
+      font-size: 16px;
+      opacity: 0;
+      transition: opacity 2s;
+      z-index: 2;
+    }
+  </style>
+</head>
+
+<body>
+
+<canvas id="espaco"></canvas>
+
+<div class="tela-inicial">
+  <button onclick="iniciar()">Clique aqui </button>
+</div>
+
+<div class="frases" id="frases">
+  <div class="frase1">Você brilha mais que qualquer astro !!</div>
+  <div class="frase2" id="frase2">Você é minha estrela predileta</div>
+</div>
+
+<div class="assinatura" id="assinatura">
+  kat garota de programa
+</div>
+
+<script>
+  const canvas = document.getElementById("espaco");
+  const ctx = canvas.getContext("2d");
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  let stars = [];
+
+  for (let i = 0; i < 1000; i++) {
+    stars.push({
+      x: Math.random() * canvas.width - canvas.width/2,
+      y: Math.random() * canvas.height - canvas.height/2,
+      z: Math.random() * canvas.width
+    });
+  }
+
+  function desenharEstrelas() {
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    ctx.fillStyle = "white";
+
+    for (let star of stars) {
+      star.z -= 4;
+
+      if (star.z <= 0) {
+        star.x = Math.random() * canvas.width - canvas.width/2;
+        star.y = Math.random() * canvas.height - canvas.height/2;
+        star.z = canvas.width;
+      }
+
+      let k = 128.0 / star.z;
+      let px = star.x * k + canvas.width / 2;
+      let py = star.y * k + canvas.height / 2;
+
+      let size = (1 - star.z / canvas.width) * 4;
+
+      ctx.fillRect(px, py, size, size);
+    }
+
+    requestAnimationFrame(desenharEstrelas);
+  }
+
+  desenharEstrelas();
+
+  function iniciar() {
+    document.querySelector(".tela-inicial").style.display = "none";
+
+    setTimeout(() => {
+      document.getElementById("frases").style.opacity = 1;
+    }, 1000);
+
+    setTimeout(() => {
+      document.getElementById("frase2").style.opacity = 1;
+    }, 3000);
+
+    setTimeout(() => {
+      document.getElementById("assinatura").style.opacity = 1;
+    }, 5000);
+  }
+</script>
+
+</body>
+</html>
